@@ -50,4 +50,15 @@ public class CompanyRepository {
                 .skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
 
     }
+
+    public Company addACompany(Company company) {
+        company.setId(generateMaxId());
+        companies.add(company);
+        return company;
+    }
+
+
+    private int generateMaxId() {
+        return companies.stream().mapToInt(employee -> employee.getId()).max().orElse(0) + 1;
+    }
 }
