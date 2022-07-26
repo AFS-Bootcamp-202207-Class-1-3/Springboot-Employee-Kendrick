@@ -3,7 +3,6 @@ package com.rest.springbootemployee.controller;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
-import com.rest.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +46,10 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.CREATED)
     public Company addACompany(@RequestBody Company company) {
         return companyRepository.addACompany(company);
+    }
+
+    @PutMapping("/{id}")
+    public void updateCompany(@PathVariable int id, @RequestBody Company company) {
+        companyRepository.updateCompany(id, company);
     }
 }

@@ -28,4 +28,10 @@ public class Company {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void merge(Company company) {
+        this.employees = company.getEmployees();
+    }
+
+
 }
