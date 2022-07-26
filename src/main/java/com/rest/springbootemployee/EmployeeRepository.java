@@ -56,4 +56,9 @@ public class EmployeeRepository {
         Employee employeeForUpdate = findById(id);
         employeeForUpdate.merge(employee);
     }
+
+    public void deleteEmployee(int id) {
+        Employee employee = findById(id);
+        employeeRepository.remove(employee);
+    }
 }
