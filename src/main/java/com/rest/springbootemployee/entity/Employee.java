@@ -1,6 +1,6 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.entity;
 
-class Employee {
+public class Employee {
     private int id;
     private String name;
     private int age;
