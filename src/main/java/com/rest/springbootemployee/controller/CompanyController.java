@@ -38,6 +38,10 @@ public class CompanyController {
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployeesByCompany(@PathVariable int id) {
         return companyRepository.getEmployees(id);
+    }
 
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Company> getCompaniesByPage(int page, int pageSize) {
+        return companyRepository.getCompaniesByPage(page, pageSize);
     }
 }

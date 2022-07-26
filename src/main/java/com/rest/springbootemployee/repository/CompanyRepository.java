@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author KENDRICK
@@ -27,8 +28,8 @@ public class CompanyRepository {
         ArrayList<Employee> employeesForCompany2 = new ArrayList<>();
         employeesForCompany2.add(new Employee(1, "Kendrick", 22, "male", 12345));
         employeesForCompany2.add(new Employee(2, "Kendrick", 22, "male", 12354));
-        companies.add(new Company(1, employeesForCompany2));
-        companies.add(new Company(2, employeesForCompany1));
+        companies.add(new Company(1, employeesForCompany1));
+        companies.add(new Company(2, employeesForCompany2));
     }
 
     public List<Company> getAllCompanies() {
@@ -41,6 +42,12 @@ public class CompanyRepository {
 
 
     public List<Employee> getEmployees(int id) {
-        return companies.stream().map(company -> company.getEmployees()).findFirst().orElseThrow(()->new NotFoundOneException(Company.class.getName()));
+        return companies.stream().map(company -> company.getEmployees()).findFirst().orElseThrow(() -> new NotFoundOneException(Company.class.getName()));
+    }
+
+    public List<Company> getCompaniesByPage(int page, int pageSize) {
+        return companies.stream()
+                .skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+
     }
 }
