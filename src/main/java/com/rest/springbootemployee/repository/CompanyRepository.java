@@ -38,4 +38,9 @@ public class CompanyRepository {
     public Company findById(int id) {
         return companies.stream().filter(employee -> employee.getId() == id).findFirst().orElseThrow(() -> new NotFoundOneException(Employee.class.getName()));
     }
+
+
+    public List<Employee> getEmployees(int id) {
+        return companies.stream().map(company -> company.getEmployees()).findFirst().orElseThrow(()->new NotFoundOneException(Company.class.getName()));
+    }
 }
