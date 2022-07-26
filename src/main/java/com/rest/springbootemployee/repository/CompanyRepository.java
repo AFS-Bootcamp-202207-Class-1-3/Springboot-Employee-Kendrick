@@ -24,8 +24,13 @@ public class CompanyRepository {
         employeesForCompany1.add(new Employee(2, "Kendrick", 22, "male", 200));
 
         ArrayList<Employee> employeesForCompany2 = new ArrayList<>();
-        employeesForCompany1.add(new Employee(1, "Kendrick", 22, "male", 12345));
-        employeesForCompany1.add(new Employee(2, "Kendrick", 22, "male", 12354));
-        companies.add(new Company(employeesForCompany1));
+        employeesForCompany2.add(new Employee(1, "Kendrick", 22, "male", 12345));
+        employeesForCompany2.add(new Employee(2, "Kendrick", 22, "male", 12354));
+        companies.add(new Company(1, employeesForCompany2));
+        companies.add(new Company(2, employeesForCompany1));
+    }
+
+    public List<Company> getAllCompanies() {
+        return companies;
     }
 }

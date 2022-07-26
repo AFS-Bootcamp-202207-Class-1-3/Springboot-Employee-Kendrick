@@ -9,13 +9,19 @@ import java.util.List;
  */
 
 public class Company {
+    private int id;
     private List<Employee> employees;
 
-    public Company(List<Employee> employees) {
+    public Company(int id, List<Employee> employees) {
+        this.id = id;
         this.employees = employees;
     }
 
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    public int getId() {
+        return id;
     }
 }
