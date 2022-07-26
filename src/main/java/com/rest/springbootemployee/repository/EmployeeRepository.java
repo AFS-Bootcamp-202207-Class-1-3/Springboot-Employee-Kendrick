@@ -1,6 +1,6 @@
 package com.rest.springbootemployee.repository;
 
-import com.rest.springbootemployee.exception.EmployeeNotFoundException;
+import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.entity.Employee;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +31,7 @@ public class EmployeeRepository {
     }
 
     public Employee findById(int id) {
-        return employeeRepository.stream().filter(employee -> employee.getId() == id).findFirst().orElseThrow(() -> new EmployeeNotFoundException());
+        return employeeRepository.stream().filter(employee -> employee.getId() == id).findFirst().orElseThrow(() -> new NotFoundOneException(Employee.class.getName()));
     }
 
     public List<Employee> getEmployeesByGender(String gender) {

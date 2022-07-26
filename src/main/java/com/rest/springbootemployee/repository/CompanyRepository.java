@@ -2,6 +2,7 @@ package com.rest.springbootemployee.repository;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.exception.NotFoundOneException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -32,5 +33,9 @@ public class CompanyRepository {
 
     public List<Company> getAllCompanies() {
         return companies;
+    }
+
+    public Company findById(int id) {
+        return companies.stream().filter(employee -> employee.getId() == id).findFirst().orElseThrow(() -> new NotFoundOneException(Employee.class.getName()));
     }
 }
