@@ -186,7 +186,7 @@ public class CompanyControllerTest {
     }
 
     @Test
-    public void should_employees_when_get_employees_by_company() throws Exception{
+    public void should_return_employees_when_get_employees_by_company() throws Exception{
         ArrayList<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
         employees.add(new Employee(1, "Laughing", 22, "male", 99999));
@@ -204,5 +204,27 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value("male"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(99999));
+    }
+
+    @Test
+    public void should_return_companies_by_page_when_given_page_and_page_size() throws Exception{
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Laughing", 22, "male", 99999));
+        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+        companyRepository.addACompany(new Company(1, employees, "zoo"));
+        int page=2;
+        int pageSize=1;
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies?page={page}&pageSize={pageSize}",page,pageSize))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("zoo"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].name").value("Laughing"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].gender").value("male"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].age").value(22))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].salary").value(99999));
     }
 }
