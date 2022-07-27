@@ -58,7 +58,7 @@ public class CompanyRepository {
     }
 
 
-    private int generateMaxId() {
+    public int generateMaxId() {
         return companies.stream().mapToInt(employee -> employee.getId()).max().orElse(0) + 1;
     }
 
@@ -70,5 +70,9 @@ public class CompanyRepository {
 
     public void cleanAll() {
         companies.clear();
+    }
+
+    public void deleteEmployee(Integer id) {
+        return;
     }
 }
