@@ -89,19 +89,23 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(20000));
     }
-//
-//    @Test
-//    public void should_return_employee_when_getCompany()ByID_given_id() throws Exception {
-//        companyRepository.addACompany(new Company(1, "Kendrick", 22, "male", 20000));
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendrick"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("male"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(20000))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(22));
-//    }
+
+    @Test
+    public void should_return_employee_when_get_company_by_id_given_id() throws Exception {
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        companyRepository.addACompany(new Company(1,employees,"OOCL"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}",1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("OOCL"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value("Kendrick"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value("male"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(22))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(20000));
+    }
 //
 //    @Test
 //    public void should_return_employeeNotFoundException_when_getCompany()ByID_given_not_found_id() throws Exception {
