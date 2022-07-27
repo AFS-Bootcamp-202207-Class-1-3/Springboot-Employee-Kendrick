@@ -184,4 +184,25 @@ public class CompanyControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/employees/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
+    @Test
+    public void should_employees_when_get_employees_by_company() throws Exception{
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Laughing", 22, "male", 99999));
+        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}/employees", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Kendrick"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("male"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(20000))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Laughing"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value("male"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(22))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(99999));
+    }
 }
