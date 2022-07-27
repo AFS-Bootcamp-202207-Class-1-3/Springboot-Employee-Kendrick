@@ -111,4 +111,17 @@ public class EmployeeServiceTest {
 
         assertThat(employeeList, equalTo(actualEmployees));
     }
+
+    @Test
+    public void should_return_nothing_when_delete_by_id_when_given_id(){
+        int id = 1;
+        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(employee);
+
+        employeeService.deleteEmployee(id);
+
+        verify(employeeRepository).deleteEmployee(1);
+
+    }
 }

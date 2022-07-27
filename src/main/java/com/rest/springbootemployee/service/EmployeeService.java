@@ -34,4 +34,8 @@ public class EmployeeService {
     public List<Employee> getEmployeesByPage(int page, int pageSize) {
         return employeeRepository.getEmployeeByPage(page, pageSize);
     }
+
+    public void deleteEmployee(Integer id) {
+        employeeRepository.deleteEmployee(id);
+    }
 }
