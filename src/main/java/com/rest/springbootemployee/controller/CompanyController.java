@@ -49,7 +49,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public void updateCompany(@PathVariable Integer id, @RequestBody Company company) {
-        companyRepository.updateCompany(id, company);
+    public Company updateCompany(@PathVariable Integer id, @RequestBody Company company) {
+        return companyRepository.updateCompany(id, company);
     }
 }

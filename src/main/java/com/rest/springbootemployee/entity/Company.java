@@ -53,6 +53,8 @@ public class Company {
 
     public void merge(Company company) {
         this.employees = company.getEmployees();
+        this.name=company.getName();
+
     }
 
 
