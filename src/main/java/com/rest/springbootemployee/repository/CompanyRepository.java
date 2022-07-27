@@ -28,8 +28,8 @@ public class CompanyRepository {
         ArrayList<Employee> employeesForCompany2 = new ArrayList<>();
         employeesForCompany2.add(new Employee(1, "Kendrick", 22, "male", 12345));
         employeesForCompany2.add(new Employee(2, "Kendrick", 22, "male", 12354));
-        companies.add(new Company(1, employeesForCompany1));
-        companies.add(new Company(2, employeesForCompany2));
+        companies.add(new Company(1, employeesForCompany1,"oocl"));
+        companies.add(new Company(2, employeesForCompany2,"cool"));
     }
 
     public List<Company> getAllCompanies() {

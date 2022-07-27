@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -52,27 +53,42 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].gender").value("male"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].salary").value(20000));
-
     }
-//
-//    @Test
-//    public void should_create_new_employee_when_perform_post_given_new_employee() throws Exception {
-//        String newCompany()="{\n" +
-//                "                \"id\": 2,\n" +
-//                "                \"name\": \"Kendraxxxxick\",\n" +
-//                "                \"age\": 12,\n" +
-//                "                \"gender\": \"male\",\n" +
-//                "                \"salary\": 30000\n" +
-//                "            }";
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
-//                .contentType(MediaType.APPLICATION_JSON).content(Company()))
-//                .andExpect(MockMvcResultMatchers.status().isCreated())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendraxxxxick"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("male"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(12))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(30000));
-//    }
+
+    @Test
+    public void should_create_new_company_when_perform_post_given_new_conpany() throws Exception {
+        String newCompany="{\n" +
+                "        \"id\": 1,\n" +
+                "        \"employees\": [\n" +
+                "            {\n" +
+                "                \"id\": 1,\n" +
+                "                \"name\": \"Kendrick\",\n" +
+                "                \"age\": 22,\n" +
+                "                \"gender\": \"male\",\n" +
+                "                \"salary\": 20000\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"id\": 2,\n" +
+                "                \"name\": \"Kendrick\",\n" +
+                "                \"age\": 22,\n" +
+                "                \"gender\": \"male\",\n" +
+                "                \"salary\": 200\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"name\": \"oocl\"\n" +
+                "    }";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/companies")
+                .contentType(MediaType.APPLICATION_JSON).content(newCompany))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("oocl"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value("Kendrick"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value("male"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(22))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(20000));
+    }
 //
 //    @Test
 //    public void should_return_employee_when_getCompany()ByID_given_id() throws Exception {

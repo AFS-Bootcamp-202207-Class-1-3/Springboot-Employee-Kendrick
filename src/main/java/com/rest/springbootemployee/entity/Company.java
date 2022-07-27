@@ -25,6 +25,9 @@ public class Company {
         this.name = name;
     }
 
+    public Company() {
+    }
+
     public Company(Integer id, List<Employee> employees) {
         this.id = id;
         this.employees = employees;
