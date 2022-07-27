@@ -38,4 +38,10 @@ public class EmployeeService {
     public void deleteEmployee(Integer id) {
         employeeRepository.deleteEmployee(id);
     }
+
+    public Employee addAEmployee(Employee employee) {
+        int id = employeeRepository.generateMaxId();
+        employee.setId(id);
+        return employeeRepository.addAEmployee(employee);
+    }
 }

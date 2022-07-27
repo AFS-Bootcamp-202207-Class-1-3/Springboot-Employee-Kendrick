@@ -39,12 +39,10 @@ public class EmployeeRepository {
     }
 
     public Employee addAEmployee(Employee employee) {
-        employee.setId(generateMaxId());
-        employeeRepository.add(employee);
         return employee;
     }
 
-    private int generateMaxId() {
+    public int generateMaxId() {
         return employeeRepository.stream().mapToInt(employee -> employee.getId()).max().orElse(0) + 1;
     }
 
