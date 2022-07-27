@@ -72,7 +72,7 @@ public class CompanyRepository {
         companies.clear();
     }
 
-    public void deleteEmployee(Integer id) {
+    public void deleteCompany(Integer id) {
         return;
     }
 }

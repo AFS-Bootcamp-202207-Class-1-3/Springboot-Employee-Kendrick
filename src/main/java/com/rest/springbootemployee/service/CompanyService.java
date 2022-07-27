@@ -1,6 +1,7 @@
 package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Company;
+import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,12 +37,16 @@ public class CompanyService {
     }
 
     public void deleteCompany(Integer id) {
-        companyRepository.deleteEmployee(id);
+        companyRepository.deleteCompany(id);
     }
 
     public Company addACompany(Company employee) {
         int id = companyRepository.generateMaxId();
         employee.setId(id);
         return companyRepository.addACompany(employee);
+    }
+
+    public List<Employee> findEmployeesById(Integer id) {
+        return companyRepository.getEmployees(id);
     }
 }
