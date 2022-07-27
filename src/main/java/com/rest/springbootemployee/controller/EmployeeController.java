@@ -44,7 +44,7 @@ public class EmployeeController {
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getEmployeesByPage(Integer page, Integer pageSize) {
-        return employeeRepository.getEmployeeByPage(page, pageSize);
+        return employeeService.getEmployeesByPage(page, pageSize);
     }
 
     @PutMapping("/{id}")

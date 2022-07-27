@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -79,8 +80,8 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void should_return_employee_when_get_employee_by_gender() {
-        String gender="male";
+    public void should_return_employees_when_get_employee_by_gender() {
+        String gender = "male";
         Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
@@ -90,5 +91,24 @@ public class EmployeeServiceTest {
         List<Employee> employeesByGender = employeeService.getEmployeesByGender(gender);
 
         assertThat(employeeList, equalTo(employeesByGender));
+    }
+
+    @Test
+    public void should_return_employees_when_get_employees_by_page_page_size() {
+        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        Employee employee1 = new Employee(2, "Marcus", 22, "male", 20000);
+        Employee employee2 = new Employee(3, "Jone", 22, "male", 20000);
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(employee);
+        employeeList.add(employee1);
+        employeeList.add(employee2);
+        int page = 2;
+        int pageSize = 1;
+
+        given(employeeRepository.getEmployeeByPage(2, 1)).willReturn(employeeList);
+
+        List<Employee> actualEmployees = employeeService.getEmployeesByPage(page, pageSize);
+
+        assertThat(employeeList, equalTo(actualEmployees));
     }
 }

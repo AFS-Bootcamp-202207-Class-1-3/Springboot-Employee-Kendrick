@@ -27,7 +27,11 @@ public class EmployeeService {
         return employeeRepository.updateEmployee(1, employee);
     }
 
-    public List<Employee> getEmployeesByGender(String gender){
+    public List<Employee> getEmployeesByGender(String gender) {
         return employeeRepository.getEmployeesByGender(gender);
+    }
+
+    public List<Employee> getEmployeesByPage(int page, int pageSize) {
+        return employeeRepository.getEmployeeByPage(page, pageSize);
     }
 }
