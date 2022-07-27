@@ -54,13 +54,16 @@ public class EmployeeRepository {
                 .skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
-    public void updateEmployee(int id, Employee employee) {
-        Employee employeeForUpdate = findById(id);
-        employeeForUpdate.merge(employee);
+    public Employee updateEmployee(int id, Employee employee) {
+        return employee;
     }
 
     public void deleteEmployee(int id) {
         Employee employee = findById(id);
         employeeRepository.remove(employee);
+    }
+
+    public void cleanAll() {
+        employeeRepository.clear();
     }
 }

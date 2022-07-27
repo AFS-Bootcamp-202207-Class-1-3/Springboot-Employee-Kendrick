@@ -28,17 +28,17 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public Company getCompanyById(@PathVariable int id) {
+    public Company getCompanyById(@PathVariable Integer id) {
         return companyRepository.findById(id);
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getEmployeesByCompany(@PathVariable int id) {
+    public List<Employee> getEmployeesByCompany(@PathVariable Integer id) {
         return companyRepository.getEmployees(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Company> getCompaniesByPage(int page, int pageSize) {
+    public List<Company> getCompaniesByPage(Integer page, Integer pageSize) {
         return companyRepository.getCompaniesByPage(page, pageSize);
     }
 
@@ -49,7 +49,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public void updateCompany(@PathVariable int id, @RequestBody Company company) {
+    public void updateCompany(@PathVariable Integer id, @RequestBody Company company) {
         companyRepository.updateCompany(id, company);
     }
 }

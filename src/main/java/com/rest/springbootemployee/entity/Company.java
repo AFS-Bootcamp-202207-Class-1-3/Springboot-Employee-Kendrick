@@ -9,23 +9,42 @@ import java.util.List;
  */
 
 public class Company {
-    private int id;
+    private Integer id;
     private List<Employee> employees;
+    private String name;
 
-    public Company(int id, List<Employee> employees) {
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Company(Integer id, List<Employee> employees) {
         this.id = id;
         this.employees = employees;
+    }
+
+    public Company(Integer id, List<Employee> employees, String name) {
+        this.id = id;
+        this.employees = employees;
+        this.name = name;
     }
 
     public List<Employee> getEmployees() {
         return employees;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
