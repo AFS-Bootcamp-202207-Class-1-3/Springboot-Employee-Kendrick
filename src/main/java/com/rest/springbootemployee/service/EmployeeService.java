@@ -13,7 +13,7 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public Employee findByID(int id) {
+    public Employee findById(int id) {
         return employeeRepository.findById(id);
     }
 
@@ -25,5 +25,9 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(id);
         employee.merge(toUpdateEmployee);
         return employeeRepository.updateEmployee(1, employee);
+    }
+
+    public List<Employee> getEmployeesByGender(String gender){
+        return employeeRepository.getEmployeesByGender(gender);
     }
 }

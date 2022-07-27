@@ -11,8 +11,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
@@ -60,21 +60,35 @@ public class EmployeeServiceTest {
 
         Employee updateEmployee = employeeService.update(1, toUpdateEmployee);
 
-        verify(employeeRepository).updateEmployee(1,originEmployee);
+        verify(employeeRepository).updateEmployee(1, originEmployee);
 
     }
 
     @Test
-    public void should_return_employee_when_get_employee_by_id_given_id(){
-        int id=1;
+    public void should_return_employee_when_get_employee_by_id_given_id() {
+        int id = 1;
         Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
 
         given(employeeRepository.findById(id)).willReturn(employee);
 
-        Employee employee2=employeeService.findByID(id);
+        Employee employee2 = employeeService.findById(id);
 
-        assertThat(employee,equalTo(employee2));
+        assertThat(employee, equalTo(employee2));
+    }
+
+    @Test
+    public void should_return_employee_when_get_employee_by_gender() {
+        String gender="male";
+        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(employee);
+
+        given(employeeRepository.getEmployeesByGender(gender)).willReturn(employeeList);
+
+        List<Employee> employeesByGender = employeeService.getEmployeesByGender(gender);
+
+        assertThat(employeeList, equalTo(employeesByGender));
     }
 }
