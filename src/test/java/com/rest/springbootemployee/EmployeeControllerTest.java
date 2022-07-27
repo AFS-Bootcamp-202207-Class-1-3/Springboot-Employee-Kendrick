@@ -83,6 +83,20 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    public void should_return_employees_when_getEmployeeByID_given_gender() throws Exception {
+        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
+        String gender="male";
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees?gender={gender}",gender))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Kendrick"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("male"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(20000))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22));
+    }
+
+    @Test
     public void should_return_employeeNotFoundException_when_getEmployeeByID_given_not_found_id() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
@@ -143,5 +157,6 @@ public class EmployeeControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/employees/{id}",id))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
 }
 
