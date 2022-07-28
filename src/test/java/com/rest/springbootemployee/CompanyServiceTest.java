@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -45,7 +48,7 @@ public class CompanyServiceTest {
     public void should_return_all_companys_when_find_all_given_companys() {
 
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
         List<Company> companyList = new ArrayList<>();
         Company company = new Company(1, employees, "oocl");
 
@@ -100,7 +103,7 @@ public class CompanyServiceTest {
         int page = 2;
         int pageSize = 1;
 
-        given(companyRepository.getCompaniesByPage(2, 1)).willReturn(companyList);
+        given(jpaCompanyRepository.findAll(PageRequest.of(page, pageSize))).willReturn(new PageImpl<>(companyList));
 
         List<Company> actualCompanys = companyService.getCompanysByPage(page, pageSize);
 

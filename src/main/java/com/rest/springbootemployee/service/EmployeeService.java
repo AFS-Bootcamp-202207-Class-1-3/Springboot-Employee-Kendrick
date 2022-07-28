@@ -52,7 +52,6 @@ public class EmployeeService {
     public List<Employee> getEmployeesByPage(int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return jpaEmployeeRepository.findAll(pageRequest).toList();
-//        return employeeRepository.getEmployeeByPage(page, pageSize);
     }
 
     public void deleteEmployeeOld(Integer id) {
