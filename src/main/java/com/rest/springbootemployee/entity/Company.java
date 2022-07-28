@@ -11,15 +11,12 @@ import java.util.List;
  */
 @Entity
 public class Company {
-    //    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
     //    @OneToMany(orphanRemoval = true)
-//    @JoinColumn(name = "companyId")
+    //    @JoinColumn(name = "companyId")
     @OneToMany(mappedBy = "companyId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Employee> employees = new ArrayList<>();
 
@@ -68,8 +65,6 @@ public class Company {
         this.employees = company.getEmployees();
         this.name = company.getName();
     }
-
-
 
 
 }

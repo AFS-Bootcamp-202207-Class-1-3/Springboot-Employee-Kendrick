@@ -34,16 +34,8 @@ public class CompanyService {
         return jpaCompanyRepository.findById(id).orElseThrow(() -> new NotFoundOneException(Company.class.getName()));
     }
 
-    public Company findByIdOld(int id) {
-        return companyRepository.findById(id);
-    }
-
     public List<Company> getAllCompany() {
         return jpaCompanyRepository.findAll();
-    }
-
-    public List<Company> getAllCompanyOld() {
-        return companyRepository.getAllCompanies();
     }
 
     public Company update(int id, Company toUpdateCompany) {
@@ -52,40 +44,18 @@ public class CompanyService {
         return jpaCompanyRepository.save(employee);
     }
 
-    public Company updateOld(int id, Company toUpdateCompany) {
-        Company employee = companyRepository.findById(id);
-        employee.merge(toUpdateCompany);
-        return companyRepository.updateCompany(1, employee);
-    }
-
     public List<Company> getCompanysByPage(int page, int pageSize) {
-//        PageRequest pageRequest = PageRequest.of(page, pageSize);
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        PageRequest pageRequest = PageRequest.of(page, pageSize,sort);
-//        jpaCompanyRepository.f
+//        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
         return jpaCompanyRepository.findAll(pageRequest).toList();
-    }
-
-    public List<Company> getCompanysByPageOld(int page, int pageSize) {
-        return companyRepository.getCompaniesByPage(page, pageSize);
     }
 
     public void deleteCompany(Integer id) {
         jpaCompanyRepository.deleteById(id);
     }
 
-    public void deleteCompanyOld(Integer id) {
-        companyRepository.deleteCompany(id);
-    }
-
     public Company addACompany(Company employee) {
         return jpaCompanyRepository.save(employee);
-    }
-
-    public Company addACompanyOld(Company employee) {
-        int id = companyRepository.generateMaxId();
-        employee.setId(id);
-        return companyRepository.addACompany(employee);
     }
 
     public List<Employee> findEmployeesById(Integer id) {

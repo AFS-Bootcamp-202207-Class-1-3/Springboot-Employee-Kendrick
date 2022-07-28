@@ -2,6 +2,7 @@ package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -156,25 +159,15 @@ public class CompanyControllerTest {
 
     }
 
-    //    @Test
-//    public void should_return_company_not_found_exception_when_put_not_found_id_employee() throws Exception {
-//        companyRepository.addACompany(new Company(1, "Kendraxxxxick", 22, "male", 20000));
-//
-//        int id=2;
-//        String employee="{\n" +
-//                "                \"id\": 1,\n" +
-//                "                \"name\": \"Kendraxxxxick\",\n" +
-//                "                \"age\": 12,\n" +
-//                "                \"gender\": \"male\",\n" +
-//                "                \"salary\": 9999\n" +
-//                "            }";
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}",id))
-//                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-//                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
-//                .andExpect(result -> assertEquals("employee not found", result.getResolvedException().getMessage()));
-//    }
-//
+        @Test
+    public void should_return_company_not_found_exception_when_put_not_found_id_employee() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}",1))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
+                .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Employee not found", result.getResolvedException().getMessage()));
+    }
+
     @Test
     public void should_return_nothing_when_delete_company_given_id() throws Exception {
 
