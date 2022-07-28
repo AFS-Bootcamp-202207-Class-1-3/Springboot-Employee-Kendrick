@@ -3,6 +3,8 @@ package com.rest.springbootemployee;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
 
@@ -29,30 +32,37 @@ import static org.hamcrest.Matchers.hasSize;
 public class CompanyControllerTest {
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private JpaCompanyRepository jpaCompanyRepository;
+
+    @Autowired
+    private JpaEmployeeRepository jpaEmployeeRepository;
+
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach
     public void cleanDB() {
         companyRepository.cleanAll();
+        jpaCompanyRepository.deleteAll();
     }
 
     @Test
     public void should_return_companies_when_getAllCompanies() throws Exception {
-        ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
-        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        jpaEmployeeRepository.save(new Employee(1,"Kendrick",22,"male",company.getId(),200));
+        jpaEmployeeRepository.save(new Employee(2,"KKK",22,"male",company.getId(),200));
+
+        Company tencent = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "tencent"));
+        jpaEmployeeRepository.save(new Employee(1,"Kendrick",22,"male",tencent.getId(),200));
+        jpaEmployeeRepository.save(new Employee(2,"KKK",22,"male",tencent.getId(),200));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("OOCL"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].name").value("Kendrick"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].salary").value(20000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(company.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(company.getName()));
     }
 
     @Test
@@ -93,7 +103,7 @@ public class CompanyControllerTest {
     @Test
     public void should_return_employee_when_get_company_by_id_given_id() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}", 1))
@@ -120,7 +130,7 @@ public class CompanyControllerTest {
     @Test
     public void should_return_company_when_put_company_given_id_company() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         int id = 1;
@@ -174,7 +184,7 @@ public class CompanyControllerTest {
     public void should_return_nothing_when_delete_company_given_id() throws Exception {
 
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
 
@@ -183,10 +193,10 @@ public class CompanyControllerTest {
     }
 
     @Test
-    public void should_return_employees_when_get_employees_by_company() throws Exception{
+    public void should_return_employees_when_get_employees_by_company() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
-        employees.add(new Employee(1, "Laughing", 22, "male",1, 99999));
+        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
+        employees.add(new Employee(1, "Laughing", 22, "male", 1, 99999));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}/employees", 1))
@@ -204,16 +214,16 @@ public class CompanyControllerTest {
     }
 
     @Test
-    public void should_return_companies_by_page_when_given_page_and_page_size() throws Exception{
+    public void should_return_companies_by_page_when_given_page_and_page_size() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
-        employees.add(new Employee(1, "Laughing", 22, "male",1, 99999));
+        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
+        employees.add(new Employee(1, "Laughing", 22, "male", 1, 99999));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
         companyRepository.addACompany(new Company(1, employees, "zoo"));
-        int page=2;
-        int pageSize=1;
+        int page = 2;
+        int pageSize = 1;
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/companies?page={page}&pageSize={pageSize}",page,pageSize))
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies?page={page}&pageSize={pageSize}", page, pageSize))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
