@@ -2,6 +2,7 @@ package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class CompanyService {
     }
 
     public Company update(int id, Company toUpdateCompany) {
+        Company employee = jpaCompanyRepository.findById(id).orElseThrow(() -> new NotFoundOneException(Company.class.getName()));
+        employee.merge(toUpdateCompany);
+        return jpaCompanyRepository.save( employee);
+    }
+
+    public Company updateOld(int id, Company toUpdateCompany) {
         Company employee = companyRepository.findById(id);
         employee.merge(toUpdateCompany);
         return companyRepository.updateCompany(1, employee);

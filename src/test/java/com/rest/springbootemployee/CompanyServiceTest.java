@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -64,13 +65,11 @@ public class CompanyServiceTest {
         Company originCompany = new Company(1, new ArrayList<>(), "orient overseas container line");
         Company toUpdateCompany = new Company(1, new ArrayList<>(), newName);
 
-        given(companyRepository.findById(1)).willReturn(originCompany);
-
-        given(companyRepository.updateCompany(1, toUpdateCompany)).willCallRealMethod();
+        given(jpaCompanyRepository.findById(1)).willReturn(Optional.of(originCompany));
 
         companyService.update(1, toUpdateCompany);
 
-        verify(companyRepository).updateCompany(1, originCompany);
+        verify(jpaCompanyRepository).save(originCompany);
 
     }
 
