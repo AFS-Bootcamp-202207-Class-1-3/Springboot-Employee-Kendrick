@@ -46,17 +46,16 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_employees_when_getAllEmployees() throws Exception {
-        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
 //        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Kendrick"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(20000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()));
     }
 
     @Test
@@ -80,9 +79,9 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_employee_when_getEmployeeByID_given_id() throws Exception {
-        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}",employee.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendrick"))
@@ -117,8 +116,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_employee_when_put_employee_given_id_employee() throws Exception {
-        jpaEmployeeRepository.save(new Employee(null, "Kendrick", 22, "male", 20000));
-
+        Employee employeeReturn = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
 
         int id=1;
         String employee="{\n" +
@@ -129,7 +127,7 @@ public class EmployeeControllerTest {
                 "                \"salary\": 9999\n" +
                 "            }";
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/employees/"+id)
+        mockMvc.perform(MockMvcRequestBuilders.put("/employees/"+employeeReturn.getId())
                 .contentType(MediaType.APPLICATION_JSON).content(employee))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendraxxxxick"))
@@ -162,9 +160,9 @@ public class EmployeeControllerTest {
     public void should_return_nothing_when_delete_employee_given_id() throws Exception {
 
         int id=1;
-        employeeRepository.addAEmployee(new Employee(1, "Kendraxxxxick", 22, "male", 20000));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendraxxxxick", 22, "male", 20000));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/{id}",id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/{id}",employee.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 

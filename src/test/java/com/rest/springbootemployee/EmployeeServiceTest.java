@@ -34,7 +34,6 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("test")
 public class EmployeeServiceTest {
 
-    //    @Mock
     @Spy
     private EmployeeRepository employeeRepository;
 
@@ -71,6 +70,7 @@ public class EmployeeServiceTest {
         Employee updateEmployee = employeeService.update(1, toUpdateEmployee);
 
         verify(jpaEmployeeRepository).save(originEmployee);
+        assertThat(originEmployee.getSalary(),equalTo(newSalary));
 
     }
 
@@ -121,23 +121,19 @@ public class EmployeeServiceTest {
 
     @Test
     public void should_return_nothing_when_delete_by_id_when_given_id() {
-        Integer id = 1;
-//        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
-//        List<Employee> employeeList = new ArrayList<>();
-//        employeeList.add(employee);
+        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
 
-        employeeService.deleteEmployee(id);
+        employeeService.deleteEmployee(employee.getId());
 
-        verify(jpaEmployeeRepository).deleteById(id);
+        verify(jpaEmployeeRepository).deleteById(employee.getId());
     }
 
     @Test
     public void should_return_employee_when_add_given_employee() {
         Employee employee = new Employee(null, "kendirck", 22, "male", 200);
-        given(employeeRepository.generateMaxId()).willReturn(2);
 
         employeeService.addAEmployee(employee);
-        verify(employeeRepository).addAEmployee(employee);
+        verify(jpaEmployeeRepository).save(employee);
     }
 
 

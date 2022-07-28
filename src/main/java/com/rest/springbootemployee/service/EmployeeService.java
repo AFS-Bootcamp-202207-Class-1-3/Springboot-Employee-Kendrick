@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -21,7 +20,7 @@ public class EmployeeService {
     private JpaEmployeeRepository jpaEmployeeRepository;
 
     public Employee findById(int id) {
-        return jpaEmployeeRepository.findById(id).orElseThrow(()->new NotFoundOneException(Employee.class.getName()));
+        return jpaEmployeeRepository.findById(id).orElseThrow(() -> new NotFoundOneException(Employee.class.getName()));
 //        return employeeRepository.findById(id);
     }
 
@@ -45,6 +44,7 @@ public class EmployeeService {
     public List<Employee> getEmployeesByGenderOld(String gender) {
         return employeeRepository.getEmployeesByGender(gender);
     }
+
     public List<Employee> getEmployeesByGender(String gender) {
         return jpaEmployeeRepository.findByGender(gender);
     }
@@ -55,7 +55,7 @@ public class EmployeeService {
 //        return employeeRepository.getEmployeeByPage(page, pageSize);
     }
 
-    public void deleteEmployeeOlc(Integer id) {
+    public void deleteEmployeeOld(Integer id) {
         employeeRepository.deleteEmployee(id);
     }
 
@@ -63,9 +63,13 @@ public class EmployeeService {
         jpaEmployeeRepository.deleteById(id);
     }
 
-    public Employee addAEmployee(Employee employee) {
+    public Employee addAEmployeeOld(Employee employee) {
         int id = employeeRepository.generateMaxId();
         employee.setId(id);
         return employeeRepository.addAEmployee(employee);
+    }
+
+    public Employee addAEmployee(Employee employee) {
+        return jpaEmployeeRepository.save(employee);
     }
 }

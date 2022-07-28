@@ -69,5 +69,7 @@ public class Employee {
 
     public void merge(Employee employee) {
         this.salary = employee.getSalary();
+        this.name=employee.getName();
+        this.age=employee.getAge();
     }
 }
