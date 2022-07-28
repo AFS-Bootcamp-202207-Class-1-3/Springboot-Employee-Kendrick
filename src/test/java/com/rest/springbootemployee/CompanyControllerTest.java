@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -106,16 +104,16 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
     }
 
-    //    @Test
-//    public void should_return_company_not_found_exception_when_get_company_by_id_given_not_found_id() throws Exception {
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
-//                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-//                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
-//                .andExpect(result -> assertEquals("Company not found", result.getResolvedException().getMessage()));
-//
-//    }
-//
+        @Test
+    public void should_return_company_not_found_exception_when_get_company_by_id_given_not_found_id() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
+                .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Company not found", result.getResolvedException().getMessage()));
+
+    }
+
     @Test
     public void should_return_company_when_put_company_given_id_company() throws Exception {
         Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
@@ -131,7 +129,7 @@ public class CompanyControllerTest {
                 "            \"name\": \"Kendrick\",\n" +
                 "            \"age\": 22,\n" +
                 "            \"gender\": \"male\",\n" +
-                "            \"companyId\": "+company.getId()+",\n" +
+                "            \"companyId\": " + company.getId() + ",\n" +
                 "            \"salary\": 200\n" +
                 "        },\n" +
                 "        {\n" +
@@ -139,7 +137,7 @@ public class CompanyControllerTest {
                 "            \"name\": \"KKK\",\n" +
                 "            \"age\": 22,\n" +
                 "            \"gender\": \"male\",\n" +
-                "            \"companyId\": "+company.getId()+",\n" +
+                "            \"companyId\": " + company.getId() + ",\n" +
                 "            \"salary\": 200\n" +
                 "        }\n" +
                 "    ],\n" +
@@ -159,13 +157,13 @@ public class CompanyControllerTest {
 
     }
 
-        @Test
+    @Test
     public void should_return_company_not_found_exception_when_put_not_found_id_employee() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}",1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
-                .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Employee not found", result.getResolvedException().getMessage()));
+                .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Company not found", result.getResolvedException().getMessage()));
     }
 
     @Test
