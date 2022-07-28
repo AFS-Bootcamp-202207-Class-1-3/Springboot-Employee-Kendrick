@@ -8,6 +8,8 @@ import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,7 +59,10 @@ public class CompanyService {
     }
 
     public List<Company> getCompanysByPage(int page, int pageSize) {
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
+//        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, pageSize,sort);
+//        jpaCompanyRepository.f
         return jpaCompanyRepository.findAll(pageRequest).toList();
     }
 

@@ -220,23 +220,25 @@ public class CompanyControllerTest {
 
     @Test
     public void should_return_companies_by_page_when_given_page_and_page_size() throws Exception {
-        ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
-        employees.add(new Employee(1, "Laughing", 22, "male", 1, 99999));
-        companyRepository.addACompany(new Company(1, employees, "OOCL"));
-        companyRepository.addACompany(new Company(1, employees, "zoo"));
-        int page = 2;
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
+
+        Company tencent = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "tencent"));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", tencent.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", tencent.getId(), 200));
+        int page = 1;
         int pageSize = 1;
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies?page={page}&pageSize={pageSize}", page, pageSize))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("zoo"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(tencent.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(tencent.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].name").value("Laughing"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[1].salary").value(99999));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].age").value(employee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[0].salary").value(employee.getSalary()));
     }
 }

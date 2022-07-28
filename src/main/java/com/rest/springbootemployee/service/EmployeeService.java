@@ -7,6 +7,7 @@ import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,8 +51,9 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesByPage(int page, int pageSize) {
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
-        return jpaEmployeeRepository.findAll(pageRequest).toList();
+//        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return jpaEmployeeRepository.findAll(pageable).toList();
     }
 
     public void deleteEmployeeOld(Integer id) {
