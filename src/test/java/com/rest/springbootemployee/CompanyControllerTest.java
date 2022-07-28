@@ -135,16 +135,16 @@ public class CompanyControllerTest {
 //
     @Test
     public void should_return_company_when_put_company_given_id_company() throws Exception {
-        ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
-        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
-        int id = 1;
-        String company = "{\n" +
-                "        \"id\": 1,\n" +
+        int id = company.getId();
+        String companyPut = "{\n" +
+                "        \"id\": "+company.getId()+",\n" +
                 "        \"employees\": [\n" +
                 "            {\n" +
-                "                \"id\": 1,\n" +
+                "                \"id\": "+employee.getId()+",\n" +
                 "                \"name\": \"Kendrick\",\n" +
                 "                \"age\": 22,\n" +
                 "                \"gender\": \"male\",\n" +
@@ -154,16 +154,16 @@ public class CompanyControllerTest {
                 "        \"name\": \"zoo\"\n" +
                 " }";
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/companies/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON).content(company))
+        mockMvc.perform(MockMvcRequestBuilders.put("/companies/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON).content(companyPut))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("zoo"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value("Kendrick"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(20000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(company.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
 
     }
 
@@ -189,12 +189,12 @@ public class CompanyControllerTest {
     @Test
     public void should_return_nothing_when_delete_company_given_id() throws Exception {
 
-        ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
-        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
