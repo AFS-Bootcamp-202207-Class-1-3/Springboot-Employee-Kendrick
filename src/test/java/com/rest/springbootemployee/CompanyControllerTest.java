@@ -121,27 +121,27 @@ public class CompanyControllerTest {
 
         int id = company.getId();
         String companyPut = " {\n" +
-                "        \"id\": "+company.getId()+",\n" +
-                "        \"employees\": [\n" +
-                "            {\n" +
-                "                \"id\": 99,\n" +
-                "                \"name\": \"96969696\",\n" +
-                "                \"age\": 22,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"companyId\": 67,\n" +
-                "                \"salary\": 200\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 100,\n" +
-                "                \"name\": \"KKK\",\n" +
-                "                \"age\": 22,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"companyId\": 67,\n" +
-                "                \"salary\": 200\n" +
-                "            }\n" +
-                "        ],\n" +
-                "        \"name\": \"oocl\"\n" +
-                "    }";
+                "    \"id\": " + company.getId() + ",\n" +
+                "    \"employees\": [\n" +
+                "        {\n" +
+                "            \"id\": 99,\n" +
+                "            \"name\": \"Kendrick\",\n" +
+                "            \"age\": 22,\n" +
+                "            \"gender\": \"male\",\n" +
+                "            \"companyId\": "+company.getId()+",\n" +
+                "            \"salary\": 200\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 100,\n" +
+                "            \"name\": \"KKK\",\n" +
+                "            \"age\": 22,\n" +
+                "            \"gender\": \"male\",\n" +
+                "            \"companyId\": "+company.getId()+",\n" +
+                "            \"salary\": 200\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"name\": \"oocl\"\n" +
+                "}";
 
         mockMvc.perform(MockMvcRequestBuilders.put("/companies/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON).content(companyPut))
