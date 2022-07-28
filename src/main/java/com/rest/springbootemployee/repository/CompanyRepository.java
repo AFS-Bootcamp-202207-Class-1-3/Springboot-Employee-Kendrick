@@ -22,12 +22,12 @@ public class CompanyRepository {
     public CompanyRepository() {
         this.companies = new ArrayList<>();
         ArrayList<Employee> employeesForCompany1 = new ArrayList<>();
-        employeesForCompany1.add(new Employee(1, "Kendrick", 22, "male", 20000));
-        employeesForCompany1.add(new Employee(2, "Kendrick", 22, "male", 200));
+        employeesForCompany1.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employeesForCompany1.add(new Employee(2, "Kendrick", 22, "male",1, 200));
 
         ArrayList<Employee> employeesForCompany2 = new ArrayList<>();
-        employeesForCompany2.add(new Employee(1, "Kendrick", 22, "male", 12345));
-        employeesForCompany2.add(new Employee(2, "Kendrick", 22, "male", 12354));
+        employeesForCompany2.add(new Employee(1, "Kendrick", 22, "male",1, 12345));
+        employeesForCompany2.add(new Employee(2, "Kendrick", 22, "male",1, 12354));
         companies.add(new Company(1, employeesForCompany1,"oocl"));
         companies.add(new Company(2, employeesForCompany2,"cool"));
     }

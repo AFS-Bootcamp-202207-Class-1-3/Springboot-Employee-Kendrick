@@ -46,7 +46,7 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_all_employees_when_find_all_given_employees() {
 
-        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        Employee employee = new Employee(1, "Kendrick", 22, "male",1, 20000);
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
 
@@ -60,8 +60,8 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_updated_employee_when_update_given_employee() {
         int newSalary = 1999;
-        Employee originEmployee = new Employee(1, "laughing", 22, "male", 80000);
-        Employee toUpdateEmployee = new Employee(1, "laughing", 22, "male", newSalary);
+        Employee originEmployee = new Employee(1, "laughing", 22, "male",1, 80000);
+        Employee toUpdateEmployee = new Employee(1, "laughing", 22, "male",1, newSalary);
 
         given(jpaEmployeeRepository.findById(1)).willReturn(Optional.of(originEmployee));
 
@@ -77,7 +77,7 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_employee_when_get_employee_by_id_given_id() {
         Integer id = 1;
-        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        Employee employee = new Employee(1, "Kendrick", 22, "male",1, 20000);
         given(jpaEmployeeRepository.findById(id)).willReturn(Optional.of(employee));
 
         Employee employee2 = employeeService.findById(id);
@@ -88,7 +88,7 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_employees_when_get_employee_by_gender() {
         String gender = "male";
-        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        Employee employee = new Employee(1, "Kendrick", 22, "male",1, 20000);
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
 
@@ -101,9 +101,9 @@ public class EmployeeServiceTest {
 
     @Test
     public void should_return_employees_when_get_employees_by_page_page_size() {
-        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
-        Employee employee1 = new Employee(2, "Marcus", 22, "male", 20000);
-        Employee employee2 = new Employee(3, "Jone", 22, "male", 20000);
+        Employee employee = new Employee(1, "Kendrick", 22, "male",1, 20000);
+        Employee employee1 = new Employee(2, "Marcus", 22, "male",1, 20000);
+        Employee employee2 = new Employee(3, "Jone", 22, "male",1, 20000);
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
         employeeList.add(employee1);
@@ -121,7 +121,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void should_return_nothing_when_delete_by_id_when_given_id() {
-        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+        Employee employee = new Employee(1, "Kendrick", 22, "male",1, 20000);
 
         employeeService.deleteEmployee(employee.getId());
 
@@ -130,7 +130,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void should_return_employee_when_add_given_employee() {
-        Employee employee = new Employee(null, "kendirck", 22, "male", 200);
+        Employee employee = new Employee(null, "kendirck", 22, "male",1, 200);
 
         employeeService.addAEmployee(employee);
         verify(jpaEmployeeRepository).save(employee);

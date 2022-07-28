@@ -13,6 +13,7 @@ public class Employee {
     private String name;
     private Integer age;
     private String gender;
+    private Integer companyId;
 
     public void setId(Integer id) {
         this.id = id;
@@ -56,11 +57,12 @@ public class Employee {
 
     private Integer salary;
 
-    public Employee(Integer id, String name, Integer age, String gender, Integer salary) {
+    public Employee(Integer id, String name, Integer age, String gender, Integer companyId, Integer salary) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.companyId = companyId;
         this.salary = salary;
     }
 

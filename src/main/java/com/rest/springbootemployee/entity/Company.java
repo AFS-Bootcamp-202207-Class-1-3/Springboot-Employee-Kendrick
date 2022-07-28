@@ -1,5 +1,7 @@
 package com.rest.springbootemployee.entity;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,11 +9,17 @@ import java.util.List;
  * @Mail KENDRICK.CHEN@OOCL.COM
  * @Date 2022/7/26 21:19
  */
-
+@Entity
 public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
-    private List<Employee> employees;
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "companyId")
+    private List<Employee> employees=new ArrayList<>();
     private String name;
+
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;

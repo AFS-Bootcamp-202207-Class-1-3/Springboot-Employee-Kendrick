@@ -2,7 +2,6 @@ package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ public class CompanyControllerTest {
     @Test
     public void should_return_companies_when_getAllCompanies() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies"))
@@ -94,7 +93,7 @@ public class CompanyControllerTest {
     @Test
     public void should_return_employee_when_get_company_by_id_given_id() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}", 1))
@@ -121,7 +120,7 @@ public class CompanyControllerTest {
     @Test
     public void should_return_company_when_put_company_given_id_company() throws Exception {
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         int id = 1;
@@ -175,7 +174,7 @@ public class CompanyControllerTest {
     public void should_return_nothing_when_delete_company_given_id() throws Exception {
 
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
 
@@ -186,8 +185,8 @@ public class CompanyControllerTest {
     @Test
     public void should_return_employees_when_get_employees_by_company() throws Exception{
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
-        employees.add(new Employee(1, "Laughing", 22, "male", 99999));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employees.add(new Employee(1, "Laughing", 22, "male",1, 99999));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}/employees", 1))
@@ -207,8 +206,8 @@ public class CompanyControllerTest {
     @Test
     public void should_return_companies_by_page_when_given_page_and_page_size() throws Exception{
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
-        employees.add(new Employee(1, "Laughing", 22, "male", 99999));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
+        employees.add(new Employee(1, "Laughing", 22, "male",1, 99999));
         companyRepository.addACompany(new Company(1, employees, "OOCL"));
         companyRepository.addACompany(new Company(1, employees, "zoo"));
         int page=2;

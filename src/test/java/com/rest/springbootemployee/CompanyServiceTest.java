@@ -40,7 +40,7 @@ public class CompanyServiceTest {
     public void should_return_all_companys_when_find_all_given_companys() {
 
         ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 20000));
+        employees.add(new Employee(1, "Kendrick", 22, "male",1, 20000));
         List<Company> companyList = new ArrayList<>();
         Company company = new Company(1, employees, "oocl");
 
