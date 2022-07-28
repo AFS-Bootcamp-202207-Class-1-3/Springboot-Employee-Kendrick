@@ -71,7 +71,7 @@ public class CompanyControllerTest {
 
     @Test
     public void should_create_new_company_when_perform_post_given_new_conpany() throws Exception {
-        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
         String newCompany = "{\n" +
                 "    \"id\": 67,\n" +
                 "    \"employees\": [],\n" +
@@ -170,7 +170,7 @@ public class CompanyControllerTest {
     public void should_return_nothing_when_delete_company_given_id() throws Exception {
 
         Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
-        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
         jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
 
