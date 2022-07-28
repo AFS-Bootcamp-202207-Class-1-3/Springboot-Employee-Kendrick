@@ -62,6 +62,10 @@ public class CompanyService {
     }
 
     public void deleteCompany(Integer id) {
+        jpaCompanyRepository.deleteById(id);
+    }
+
+    public void deleteCompanyOld(Integer id) {
         companyRepository.deleteCompany(id);
     }
 

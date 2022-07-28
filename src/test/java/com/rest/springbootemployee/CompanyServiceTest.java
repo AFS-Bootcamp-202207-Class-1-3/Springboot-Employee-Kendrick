@@ -115,12 +115,9 @@ public class CompanyServiceTest {
         int id = 1;
         Company company = new Company(1, new ArrayList<Employee>(), "icbc");
 
-        List<Company> companyList = new ArrayList<>();
-        companyList.add(company);
-
         companyService.deleteCompany(id);
 
-        verify(companyRepository).deleteCompany(1);
+        verify(jpaCompanyRepository).deleteById(id);
     }
 
     @Test
