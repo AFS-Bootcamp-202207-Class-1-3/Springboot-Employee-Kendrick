@@ -5,6 +5,7 @@ import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class CompanyService {
 
     @Autowired
     private JpaCompanyRepository jpaCompanyRepository;
+
+    @Autowired
+    private JpaEmployeeRepository jpaEmployeeRepository;
 
     public Company findById(int id) {
         return jpaCompanyRepository.findById(id).orElseThrow(() -> new NotFoundOneException(Company.class.getName()));
@@ -80,6 +84,6 @@ public class CompanyService {
     }
 
     public List<Employee> findEmployeesById(Integer id) {
-        return companyRepository.getEmployees(id);
+        return jpaEmployeeRepository.findByCompanyId(id);
     }
 }

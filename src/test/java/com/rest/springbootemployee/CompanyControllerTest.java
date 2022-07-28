@@ -200,23 +200,22 @@ public class CompanyControllerTest {
 
     @Test
     public void should_return_employees_when_get_employees_by_company() throws Exception {
-        ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
-        employees.add(new Employee(1, "Laughing", 22, "male", 1, 99999));
-        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}/employees", 1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}/employees", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Kendrick"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("male"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(20000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Laughing"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("KKK"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value("male"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(99999));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(200));
     }
 
     @Test

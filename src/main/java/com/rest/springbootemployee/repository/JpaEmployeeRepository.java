@@ -17,5 +17,6 @@ import java.util.List;
 @Repository
 public interface JpaEmployeeRepository extends JpaRepository<Employee,Integer> {
     List<Employee> findByGender(String gender);
+    List<Employee> findByCompanyId(Integer companyId);
 
 }
