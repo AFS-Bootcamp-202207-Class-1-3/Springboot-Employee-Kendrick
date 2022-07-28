@@ -3,12 +3,15 @@ package com.rest.springbootemployee;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
+import com.rest.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -28,17 +31,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EmployeeControllerTest {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private JpaEmployeeRepository jpaEmployeeRepository;
+
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach
     public void cleanDB() {
         employeeRepository.cleanAll();
+        jpaEmployeeRepository.deleteAll();
     }
 
     @Test
     public void should_return_employees_when_getAllEmployees() throws Exception {
-        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
+//        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -71,7 +80,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_employee_when_getEmployeeByID_given_id() throws Exception {
-        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -84,7 +93,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_employees_when_getEmployeeByID_given_gender() throws Exception {
-        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", 20000));
         String gender="male";
         mockMvc.perform(MockMvcRequestBuilders.get("/employees?gender={gender}",gender))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -100,21 +109,22 @@ public class EmployeeControllerTest {
     public void should_return_employeeNotFoundException_when_getEmployeeByID_given_not_found_id() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
-                .andExpect(result -> assertEquals("employee not found", result.getResolvedException().getMessage()));
+                .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Employee not found", result.getResolvedException().getMessage()));
 
     }
 
     @Test
     public void should_return_employee_when_put_employee_given_id_employee() throws Exception {
-        employeeRepository.addAEmployee(new Employee(1, "Kendraxxxxick", 22, "male", 20000));
+        jpaEmployeeRepository.save(new Employee(null, "Kendrick", 22, "male", 20000));
+
 
         int id=1;
         String employee="{\n" +
                 "                \"id\": 1,\n" +
                 "                \"name\": \"Kendraxxxxick\",\n" +
-                "                \"age\": 12,\n" +
+                "                \"age\": 22,\n" +
                 "                \"gender\": \"male\",\n" +
                 "                \"salary\": 9999\n" +
                 "            }";
@@ -124,7 +134,7 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendraxxxxick"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(12))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(9999));
 
     }
@@ -143,9 +153,9 @@ public class EmployeeControllerTest {
                 "            }";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}",id))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
-                .andExpect(result -> assertEquals("employee not found", result.getResolvedException().getMessage()));
+                .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Employee not found", result.getResolvedException().getMessage()));
     }
 
     @Test

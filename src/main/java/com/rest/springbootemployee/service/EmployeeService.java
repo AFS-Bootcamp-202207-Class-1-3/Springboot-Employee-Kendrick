@@ -1,8 +1,12 @@
 package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,30 +17,50 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private JpaEmployeeRepository jpaEmployeeRepository;
+
     public Employee findById(int id) {
-        return employeeRepository.findById(id);
+        return jpaEmployeeRepository.findById(id).orElseThrow(()->new NotFoundOneException(Employee.class.getName()));
+//        return employeeRepository.findById(id);
     }
 
     public List<Employee> getAllEmployee() {
-        return employeeRepository.getAllEmployee();
+        return jpaEmployeeRepository.findAll();
+//        return employeeRepository.getAllEmployee();
+    }
+
+    public Employee updateOld(int id, Employee toUpdateEmployee) {
+        Employee employee = employeeRepository.findById(id);
+        employee.merge(toUpdateEmployee);
+        return employeeRepository.updateEmployee(id, employee);
     }
 
     public Employee update(int id, Employee toUpdateEmployee) {
-        Employee employee = employeeRepository.findById(id);
+        Employee employee = jpaEmployeeRepository.findById(id).get();
         employee.merge(toUpdateEmployee);
-        return employeeRepository.updateEmployee(1, employee);
+        return jpaEmployeeRepository.save(employee);
     }
 
-    public List<Employee> getEmployeesByGender(String gender) {
+    public List<Employee> getEmployeesByGenderOld(String gender) {
         return employeeRepository.getEmployeesByGender(gender);
+    }
+    public List<Employee> getEmployeesByGender(String gender) {
+        return jpaEmployeeRepository.findByGender(gender);
     }
 
     public List<Employee> getEmployeesByPage(int page, int pageSize) {
-        return employeeRepository.getEmployeeByPage(page, pageSize);
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        return jpaEmployeeRepository.findAll(pageRequest).toList();
+//        return employeeRepository.getEmployeeByPage(page, pageSize);
+    }
+
+    public void deleteEmployeeOlc(Integer id) {
+        employeeRepository.deleteEmployee(id);
     }
 
     public void deleteEmployee(Integer id) {
-        employeeRepository.deleteEmployee(id);
+        jpaEmployeeRepository.deleteById(id);
     }
 
     public Employee addAEmployee(Employee employee) {

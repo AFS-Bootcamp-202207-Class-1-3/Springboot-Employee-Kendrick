@@ -39,6 +39,7 @@ public class EmployeeRepository {
     }
 
     public Employee addAEmployee(Employee employee) {
+        employeeRepository.add(employee);
         return employee;
     }
 
@@ -53,6 +54,7 @@ public class EmployeeRepository {
     }
 
     public Employee updateEmployee(int id, Employee employee) {
+        employeeRepository.set(id-1,employee);
         return employee;
     }
 

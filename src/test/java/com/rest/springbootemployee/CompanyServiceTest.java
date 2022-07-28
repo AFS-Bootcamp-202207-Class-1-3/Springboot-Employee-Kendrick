@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ import static org.mockito.Mockito.verify;
  */
 
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
 public class CompanyServiceTest {
-    //    @Mock
     @Spy
     private CompanyRepository companyRepository;
 
@@ -54,16 +55,16 @@ public class CompanyServiceTest {
 
     @Test
     public void should_return_updated_company_when_update_given_company() {
-        String newName = "oooo";
+        String newName = "oocl";
 
-        Company originCompany = new Company(1, new ArrayList<Employee>(), "oocl");
-        Company toUpdateCompany = new Company(1, new ArrayList<Employee>(), newName);
+        Company originCompany = new Company(1, new ArrayList<>(), "orient overseas container line");
+        Company toUpdateCompany = new Company(1, new ArrayList<>(), newName);
 
         given(companyRepository.findById(1)).willReturn(originCompany);
 
         given(companyRepository.updateCompany(1, toUpdateCompany)).willCallRealMethod();
 
-        Company updateCompany = companyService.update(1, toUpdateCompany);
+        companyService.update(1, toUpdateCompany);
 
         verify(companyRepository).updateCompany(1, originCompany);
 
@@ -86,8 +87,8 @@ public class CompanyServiceTest {
 
     @Test
     public void should_return_companys_when_get_companys_by_page_page_size() {
-        Company company = new Company(1, new ArrayList<Employee>(), "oocl");
-        Company company1 = new Company(1, new ArrayList<Employee>(), "icbc");
+        Company company = new Company(1, new ArrayList<>(), "oocl");
+        Company company1 = new Company(1, new ArrayList<>(), "icbc");
 
         List<Company> companyList = new ArrayList<>();
         companyList.add(company);

@@ -2,15 +2,21 @@ package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import com.rest.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -25,11 +31,15 @@ import static org.mockito.Mockito.verify;
  * @Date 2022/7/27 20:11
  */
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
 public class EmployeeServiceTest {
 
     //    @Mock
     @Spy
     private EmployeeRepository employeeRepository;
+
+    @Spy
+    private JpaEmployeeRepository jpaEmployeeRepository;
 
     @InjectMocks
     private EmployeeService employeeService;
@@ -41,7 +51,7 @@ public class EmployeeServiceTest {
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
 
-        given(employeeRepository.getAllEmployee()).willReturn(employeeList);
+        given(jpaEmployeeRepository.findAll()).willReturn(employeeList);
 
         List<Employee> employees = employeeService.getAllEmployee();
 
@@ -54,24 +64,21 @@ public class EmployeeServiceTest {
         Employee originEmployee = new Employee(1, "laughing", 22, "male", 80000);
         Employee toUpdateEmployee = new Employee(1, "laughing", 22, "male", newSalary);
 
-        given(employeeRepository.findById(1)).willReturn(originEmployee);
+        given(jpaEmployeeRepository.findById(1)).willReturn(Optional.of(originEmployee));
 
-        given(employeeRepository.updateEmployee(1, toUpdateEmployee)).willCallRealMethod();
+//        given(jpaEmployeeRepository.save( toUpdateEmployee)).willCallRealMethod();
 
         Employee updateEmployee = employeeService.update(1, toUpdateEmployee);
 
-        verify(employeeRepository).updateEmployee(1, originEmployee);
+        verify(jpaEmployeeRepository).save(originEmployee);
 
     }
 
     @Test
     public void should_return_employee_when_get_employee_by_id_given_id() {
-        int id = 1;
+        Integer id = 1;
         Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
-        List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(employee);
-
-        given(employeeRepository.findById(id)).willReturn(employee);
+        given(jpaEmployeeRepository.findById(id)).willReturn(Optional.of(employee));
 
         Employee employee2 = employeeService.findById(id);
 
@@ -85,7 +92,7 @@ public class EmployeeServiceTest {
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(employee);
 
-        given(employeeRepository.getEmployeesByGender(gender)).willReturn(employeeList);
+        given(jpaEmployeeRepository.findByGender(gender)).willReturn(employeeList);
 
         List<Employee> employeesByGender = employeeService.getEmployeesByGender(gender);
 
@@ -104,7 +111,8 @@ public class EmployeeServiceTest {
         int page = 2;
         int pageSize = 1;
 
-        given(employeeRepository.getEmployeeByPage(2, 1)).willReturn(employeeList);
+         Pageable pageable = PageRequest.of(page, pageSize);
+        given(jpaEmployeeRepository.findAll(pageable)).willReturn(new PageImpl<>(employeeList));
 
         List<Employee> actualEmployees = employeeService.getEmployeesByPage(page, pageSize);
 
@@ -113,14 +121,14 @@ public class EmployeeServiceTest {
 
     @Test
     public void should_return_nothing_when_delete_by_id_when_given_id() {
-        int id = 1;
-        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
-        List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(employee);
+        Integer id = 1;
+//        Employee employee = new Employee(1, "Kendrick", 22, "male", 20000);
+//        List<Employee> employeeList = new ArrayList<>();
+//        employeeList.add(employee);
 
         employeeService.deleteEmployee(id);
 
-        verify(employeeRepository).deleteEmployee(1);
+        verify(jpaEmployeeRepository).deleteById(id);
     }
 
     @Test

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 public class GlobalControllerAdvice {
-
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({NotFoundOneException.class})
     public ErrorResponse handlerNotFoundException(Exception exception){

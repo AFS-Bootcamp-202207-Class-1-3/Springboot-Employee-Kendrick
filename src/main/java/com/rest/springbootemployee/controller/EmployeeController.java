@@ -1,7 +1,7 @@
 package com.rest.springbootemployee.controller;
 
 
-import com.rest.springbootemployee.repository.EmployeeRepository;
+
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 @RestController
 @RequestMapping("employees")
 public class EmployeeController {
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
 
     @Autowired
     private EmployeeService employeeService;
