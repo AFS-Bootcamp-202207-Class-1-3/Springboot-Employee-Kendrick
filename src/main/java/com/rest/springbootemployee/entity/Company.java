@@ -11,13 +11,18 @@ import java.util.List;
  */
 @Entity
 public class Company {
+    //    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "companyId")
+    //    @OneToMany(orphanRemoval = true)
+//    @JoinColumn(name = "companyId")
+    @OneToMany(mappedBy = "companyId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Employee> employees = new ArrayList<>();
+
     private String name;
 
 
@@ -62,8 +67,9 @@ public class Company {
     public void merge(Company company) {
         this.employees = company.getEmployees();
         this.name = company.getName();
-
     }
+
+
 
 
 }

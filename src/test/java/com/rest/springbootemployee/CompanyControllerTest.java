@@ -72,38 +72,18 @@ public class CompanyControllerTest {
     public void should_create_new_company_when_perform_post_given_new_conpany() throws Exception {
         Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
         String newCompany = "{\n" +
-                "        \"id\": ,\n" +
-                "        \"employees\": [\n" +
-                "            {\n" +
-                "                \"id\": 1,\n" +
-                "                \"name\": \"Kendrick\",\n" +
-                "                \"age\": 22,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"companyId\": \"\",\n" +
-                "                \"salary\": 20000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 2,\n" +
-                "                \"name\": \"Kendrick\",\n" +
-                "                \"age\": 22,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"companyId\": \"\",\n" +
-                "                \"salary\": 200\n" +
-                "            }\n" +
-                "        ],\n" +
-                "        \"name\": \"oocl\"\n" +
-                "    }";
+                "    \"id\": 67,\n" +
+                "    \"employees\": [],\n" +
+                "    \"name\": \"oocl\"\n" +
+                "}";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/companies")
                 .contentType(MediaType.APPLICATION_JSON).content(newCompany))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("oocl"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value("Kendrick"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(20000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(0)));
+
     }
 
     @Test
@@ -140,19 +120,28 @@ public class CompanyControllerTest {
         jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
         int id = company.getId();
-        String companyPut = "{\n" +
+        String companyPut = " {\n" +
                 "        \"id\": "+company.getId()+",\n" +
                 "        \"employees\": [\n" +
                 "            {\n" +
-                "                \"id\": "+employee.getId()+",\n" +
-                "                \"name\": \"Kendrick\",\n" +
+                "                \"id\": 99,\n" +
+                "                \"name\": \"96969696\",\n" +
                 "                \"age\": 22,\n" +
                 "                \"gender\": \"male\",\n" +
-                "                \"salary\": 20000\n" +
+                "                \"companyId\": 67,\n" +
+                "                \"salary\": 200\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"id\": 100,\n" +
+                "                \"name\": \"KKK\",\n" +
+                "                \"age\": 22,\n" +
+                "                \"gender\": \"male\",\n" +
+                "                \"companyId\": 67,\n" +
+                "                \"salary\": 200\n" +
                 "            }\n" +
                 "        ],\n" +
-                "        \"name\": \"zoo\"\n" +
-                " }";
+                "        \"name\": \"oocl\"\n" +
+                "    }";
 
         mockMvc.perform(MockMvcRequestBuilders.put("/companies/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON).content(companyPut))
