@@ -122,14 +122,13 @@ public class CompanyServiceTest {
 
     @Test
     public void should_return_company_when_add_given_company() {
-        int willReturnId = 2;
+
         Company company = new Company(1, new ArrayList<Employee>(), "icbc");
-
-        given(companyRepository.generateMaxId()).willReturn(2);
-
+        given(jpaCompanyRepository.save(company)).willReturn(company);
         Company addACompany = companyService.addACompany(company);
-        assertThat(addACompany.getId(), equalTo(willReturnId));
-        verify(companyRepository).addACompany(company);
+
+        verify(jpaCompanyRepository).save(company);
+        assertThat(company.getId(), equalTo(addACompany.getId()));
     }
 
 

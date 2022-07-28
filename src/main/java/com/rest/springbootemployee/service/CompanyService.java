@@ -43,7 +43,7 @@ public class CompanyService {
     public Company update(int id, Company toUpdateCompany) {
         Company employee = jpaCompanyRepository.findById(id).orElseThrow(() -> new NotFoundOneException(Company.class.getName()));
         employee.merge(toUpdateCompany);
-        return jpaCompanyRepository.save( employee);
+        return jpaCompanyRepository.save(employee);
     }
 
     public Company updateOld(int id, Company toUpdateCompany) {
@@ -70,6 +70,10 @@ public class CompanyService {
     }
 
     public Company addACompany(Company employee) {
+        return jpaCompanyRepository.save(employee);
+    }
+
+    public Company addACompanyOld(Company employee) {
         int id = companyRepository.generateMaxId();
         employee.setId(id);
         return companyRepository.addACompany(employee);
