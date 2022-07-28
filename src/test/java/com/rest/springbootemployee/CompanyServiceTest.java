@@ -80,11 +80,11 @@ public class CompanyServiceTest {
         List<Company> companyList = new ArrayList<>();
         companyList.add(company);
 
-        given(companyRepository.findById(id)).willReturn(company);
+        given(jpaCompanyRepository.findById(id)).willReturn(Optional.of(company));
 
-        Company company2 = companyService.findById(id);
+        Company companyFound = companyService.findById(id);
 
-        assertThat(company, equalTo(company2));
+        assertThat(company, equalTo(companyFound));
     }
 
 

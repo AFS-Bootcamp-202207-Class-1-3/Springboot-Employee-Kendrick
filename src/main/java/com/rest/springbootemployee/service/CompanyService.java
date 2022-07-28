@@ -24,6 +24,10 @@ public class CompanyService {
     private JpaCompanyRepository jpaCompanyRepository;
 
     public Company findById(int id) {
+        return jpaCompanyRepository.findById(id).orElseThrow(() -> new NotFoundOneException(Company.class.getName()));
+    }
+
+    public Company findByIdOld(int id) {
         return companyRepository.findById(id);
     }
 
