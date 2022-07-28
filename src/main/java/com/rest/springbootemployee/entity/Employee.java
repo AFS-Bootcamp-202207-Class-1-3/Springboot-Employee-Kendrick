@@ -1,9 +1,6 @@
 package com.rest.springbootemployee.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Employee {
@@ -13,7 +10,18 @@ public class Employee {
     private String name;
     private Integer age;
     private String gender;
+
+//    @ManyToOne(targetEntity = Company.class)
+//    @JoinColumn(name = "companyId", referencedColumnName = "id")
     private Integer companyId;
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
 
     public void setId(Integer id) {
         this.id = id;

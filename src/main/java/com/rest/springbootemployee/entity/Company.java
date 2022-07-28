@@ -13,11 +13,11 @@ import java.util.List;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
+
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "companyId")
-    private List<Employee> employees=new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
     private String name;
 
 
@@ -61,7 +61,7 @@ public class Company {
 
     public void merge(Company company) {
         this.employees = company.getEmployees();
-        this.name=company.getName();
+        this.name = company.getName();
 
     }
 

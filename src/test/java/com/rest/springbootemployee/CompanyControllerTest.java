@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,6 +30,7 @@ import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+//@ActiveProfiles("test")
 public class CompanyControllerTest {
     @Autowired
     private CompanyRepository companyRepository;
@@ -45,18 +47,19 @@ public class CompanyControllerTest {
     @BeforeEach
     public void cleanDB() {
         companyRepository.cleanAll();
+        jpaEmployeeRepository.deleteAll();
         jpaCompanyRepository.deleteAll();
     }
 
     @Test
     public void should_return_companies_when_getAllCompanies() throws Exception {
         Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
-        jpaEmployeeRepository.save(new Employee(1,"Kendrick",22,"male",company.getId(),200));
-        jpaEmployeeRepository.save(new Employee(2,"KKK",22,"male",company.getId(),200));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
         Company tencent = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "tencent"));
-        jpaEmployeeRepository.save(new Employee(1,"Kendrick",22,"male",tencent.getId(),200));
-        jpaEmployeeRepository.save(new Employee(2,"KKK",22,"male",tencent.getId(),200));
+        jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", tencent.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", tencent.getId(), 200));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -67,14 +70,16 @@ public class CompanyControllerTest {
 
     @Test
     public void should_create_new_company_when_perform_post_given_new_conpany() throws Exception {
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
         String newCompany = "{\n" +
-                "        \"id\": 1,\n" +
+                "        \"id\": ,\n" +
                 "        \"employees\": [\n" +
                 "            {\n" +
                 "                \"id\": 1,\n" +
                 "                \"name\": \"Kendrick\",\n" +
                 "                \"age\": 22,\n" +
                 "                \"gender\": \"male\",\n" +
+                "                \"companyId\": \"\",\n" +
                 "                \"salary\": 20000\n" +
                 "            },\n" +
                 "            {\n" +
@@ -82,6 +87,7 @@ public class CompanyControllerTest {
                 "                \"name\": \"Kendrick\",\n" +
                 "                \"age\": 22,\n" +
                 "                \"gender\": \"male\",\n" +
+                "                \"companyId\": \"\",\n" +
                 "                \"salary\": 200\n" +
                 "            }\n" +
                 "        ],\n" +
@@ -102,19 +108,19 @@ public class CompanyControllerTest {
 
     @Test
     public void should_return_employee_when_get_company_by_id_given_id() throws Exception {
-        ArrayList<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Kendrick", 22, "male", 1, 20000));
-        companyRepository.addACompany(new Company(1, employees, "OOCL"));
+        Company company = jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", company.getId(), 200));
+        jpaEmployeeRepository.save(new Employee(2, "KKK", 22, "male", company.getId(), 200));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("OOCL"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value("Kendrick"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(20000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(company.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
     }
 
     //    @Test
