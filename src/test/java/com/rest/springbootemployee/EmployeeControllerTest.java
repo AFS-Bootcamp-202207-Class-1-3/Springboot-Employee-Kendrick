@@ -38,10 +38,10 @@ public class EmployeeControllerTest {
     @Autowired
     private JpaCompanyRepository jpaCompanyRepository;
 
+    //  生成一个空壳公司防止外键出错
     private Company prepareCompany;
 
     private Integer COMPANY_ID;
-
 
     @Autowired
     private MockMvc mockMvc;

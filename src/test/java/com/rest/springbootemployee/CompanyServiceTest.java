@@ -3,6 +3,7 @@ package com.rest.springbootcompany;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +34,9 @@ public class CompanyServiceTest {
     @Spy
     private CompanyRepository companyRepository;
 
+    @Spy
+    private JpaCompanyRepository jpaCompanyRepository;
+
     @InjectMocks
     private CompanyService companyService;
 
@@ -46,10 +50,10 @@ public class CompanyServiceTest {
 
         companyList.add(company);
 
-        given(companyRepository.getAllCompanies()).willReturn(companyList);
+        given(jpaCompanyRepository.findAll()).willReturn(companyList);
 
         List<Company> companys = companyService.getAllCompany();
-
+        verify(jpaCompanyRepository).findAll();
         assertThat(companys, hasSize(1));
     }
 
