@@ -108,7 +108,6 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Kendrick"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(20000))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22));
     }
 
