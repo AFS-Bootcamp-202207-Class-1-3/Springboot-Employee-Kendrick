@@ -15,11 +15,11 @@ import java.util.List;
 public class CompanyRequest {
     private Integer id;
 
-    private List<Employee> employees = new ArrayList<>();
+    private List<EmployeeRequest> employees = new ArrayList<>();
 
     private String name;
 
-    public CompanyRequest(Integer id, List<Employee> employees, String name) {
+    public CompanyRequest(Integer id, List<EmployeeRequest> employees, String name) {
         this.id = id;
         this.employees = employees;
         this.name = name;
@@ -36,11 +36,11 @@ public class CompanyRequest {
         this.id = id;
     }
 
-    public List<Employee> getEmployees() {
+    public List<EmployeeRequest> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(List<EmployeeRequest> employees) {
         this.employees = employees;
     }
 
@@ -50,10 +50,5 @@ public class CompanyRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void merge(Company company) {
-        this.employees = company.getEmployees();
-        this.name = company.getName();
     }
 }

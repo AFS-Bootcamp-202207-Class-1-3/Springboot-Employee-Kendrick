@@ -1,6 +1,5 @@
 package com.rest.springbootemployee.entity.response;
 
-import com.rest.springbootemployee.entity.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.List;
 public class CompanyResponse {
     private Integer id;
 
-    private List<Employee> employees = new ArrayList<>();
+    private List<EmployeeResponse> employees = new ArrayList<>();
 
     private String name;
 
-    public CompanyResponse(Integer id, List<Employee> employees, String name) {
+    public CompanyResponse(Integer id, List<EmployeeResponse> employees, String name) {
         this.id = id;
         this.employees = employees;
         this.name = name;
@@ -34,11 +33,11 @@ public class CompanyResponse {
         this.id = id;
     }
 
-    public List<Employee> getEmployees() {
+    public List<EmployeeResponse> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(List<EmployeeResponse> employees) {
         this.employees = employees;
     }
 
