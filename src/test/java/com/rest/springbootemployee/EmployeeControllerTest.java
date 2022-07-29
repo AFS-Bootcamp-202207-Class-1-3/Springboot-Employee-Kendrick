@@ -74,7 +74,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_create_new_employee_when_perform_post_given_new_employee() throws Exception {
-        EmployeeRequest employeeRequest = new EmployeeRequest("Kendraxxxxick",12,"male",200,1);
+        EmployeeRequest employeeRequest = new EmployeeRequest("Kendraxxxxick",12,"male",200,COMPANY_ID);
         ObjectMapper objectMapper=new ObjectMapper();
         String employee = objectMapper.writeValueAsString(employeeRequest);
 
