@@ -2,8 +2,8 @@ package com.rest.springbootemployee.controller;
 
 
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.entity.EmployeeRequest;
-import com.rest.springbootemployee.entity.EmployeeResponse;
+import com.rest.springbootemployee.entity.request.EmployeeRequest;
+import com.rest.springbootemployee.entity.response.EmployeeResponse;
 import com.rest.springbootemployee.mapper.EmployeeMapper;
 import com.rest.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.rest.springbootemployee.entity;
+package com.rest.springbootemployee.entity.request;
 
 /**
  * Created with IntelliJ IDEA.

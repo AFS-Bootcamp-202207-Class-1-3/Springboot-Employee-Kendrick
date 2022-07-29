@@ -1,9 +1,8 @@
 package com.rest.springbootemployee.mapper;
 
-import com.rest.springbootemployee.advice.ErrorResponse;
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.entity.EmployeeRequest;
-import com.rest.springbootemployee.entity.EmployeeResponse;
+import com.rest.springbootemployee.entity.request.EmployeeRequest;
+import com.rest.springbootemployee.entity.response.EmployeeResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
