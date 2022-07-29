@@ -2,7 +2,8 @@ package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.entity.response.CompanyResponse;
+import com.rest.springbootemployee.mapper.CompanyMapper;
 import com.rest.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,12 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private CompanyMapper companyMapper;
+
     @GetMapping
-    public List<Company> getCompanies() {
-        return companyService.getAllCompany();
+    public List<CompanyResponse> getCompanies() {
+        return companyMapper.toResponses(companyService.getAllCompany());
     }
 
     @GetMapping("/{id}")
