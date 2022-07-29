@@ -1,7 +1,6 @@
 package com.rest.springbootemployee.controller;
 
 
-
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.entity.EmployeeRequest;
 import com.rest.springbootemployee.entity.EmployeeResponse;
@@ -49,13 +48,14 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employee> getEmployeesByPage(Integer page, Integer pageSize) {
-        return employeeService.getEmployeesByPage(page, pageSize);
+    public List<EmployeeResponse> getEmployeesByPage(Integer page, Integer pageSize) {
+        return employeeMapper.toResponses(employeeService.getEmployeesByPage(page, pageSize));
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
-        return employeeService.update(id, employee);
+    public EmployeeResponse updateEmployee(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
+        return employeeMapper.toResponse(employeeService.update(id, employee));
     }
 
     @DeleteMapping("/{id}")

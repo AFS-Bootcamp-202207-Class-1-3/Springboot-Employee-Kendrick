@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Collections;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -125,39 +127,27 @@ public class EmployeeControllerTest {
     public void should_return_employee_when_put_employee_given_id_employee() throws Exception {
         Employee employeeReturn = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", COMPANY_ID, 20000));
 
-        int id = 1;
-        String employee = "{\n" +
-                "                \"id\": 1,\n" +
-                "                \"name\": \"Kendraxxxxick\",\n" +
-                "                \"age\": 22,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"salary\": 9999\n" +
-                "            }";
+        EmployeeRequest employeeRequest = new EmployeeRequest("Kendraxxxxick",12,"male",200,1);
+        ObjectMapper objectMapper=new ObjectMapper();
+        String employee = objectMapper.writeValueAsString(employeeRequest);
+
 
         mockMvc.perform(MockMvcRequestBuilders.put("/employees/" + employeeReturn.getId())
                 .contentType(MediaType.APPLICATION_JSON).content(employee))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendraxxxxick"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(22))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(9999));
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(12));
     }
 
     @Test
     public void should_return_employee_not_found_exception_when_put_not_found_id_employee() throws Exception {
-        employeeRepository.addAEmployee(new Employee(1, "Kendraxxxxick", 22, "male", COMPANY_ID, 20000));
+        Employee employeeReturn = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", COMPANY_ID, 20000));
 
-        int id = 2;
-        String employee = "{\n" +
-                "                \"id\": 1,\n" +
-                "                \"name\": \"Kendraxxxxick\",\n" +
-                "                \"age\": 12,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"salary\": 9999\n" +
-                "            }";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", id))
+//        Integer id=employeeRequest.get
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", employeeReturn.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
                 .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Employee not found", result.getResolvedException().getMessage()));
