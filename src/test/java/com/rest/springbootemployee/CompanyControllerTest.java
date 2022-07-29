@@ -1,7 +1,10 @@
 package com.rest.springbootemployee;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.entity.request.CompanyRequest;
+import com.rest.springbootemployee.entity.request.EmployeeRequest;
 import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
@@ -16,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -73,11 +77,10 @@ public class CompanyControllerTest {
     public void should_create_new_company_when_perform_post_given_new_conpany() throws Exception {
 
         jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
-        String newCompany = "{\n" +
-                "    \"id\": 67,\n" +
-                "    \"employees\": [],\n" +
-                "    \"name\": \"oocl\"\n" +
-                "}";
+
+        CompanyRequest companyRequest = new CompanyRequest(1,new ArrayList<>(),"oocl");
+        ObjectMapper objectMapper=new ObjectMapper();
+        String newCompany = objectMapper.writeValueAsString(companyRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/companies")
                 .contentType(MediaType.APPLICATION_JSON).content(newCompany))
