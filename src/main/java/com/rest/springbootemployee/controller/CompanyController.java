@@ -48,8 +48,8 @@ public class CompanyController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Company> getCompaniesByPage(Integer page, Integer pageSize) {
-        return companyService.getCompanysByPage(page, pageSize);
+    public List<CompanyResponse> getCompaniesByPage(Integer page, Integer pageSize) {
+        return companyMapper.toResponses(companyService.getCompanysByPage(page, pageSize));
     }
 
     @PostMapping
