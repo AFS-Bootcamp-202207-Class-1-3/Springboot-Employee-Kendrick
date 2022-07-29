@@ -3,7 +3,9 @@ package com.rest.springbootemployee.controller;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.entity.response.CompanyResponse;
+import com.rest.springbootemployee.entity.response.EmployeeResponse;
 import com.rest.springbootemployee.mapper.CompanyMapper;
+import com.rest.springbootemployee.mapper.EmployeeMapper;
 import com.rest.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,9 @@ public class CompanyController {
     @Autowired
     private CompanyMapper companyMapper;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
     @GetMapping
     public List<CompanyResponse> getCompanies() {
         return companyMapper.toResponses(companyService.getAllCompany());
@@ -38,8 +43,8 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getEmployeesByCompany(@PathVariable Integer id) {
-        return companyService.findEmployeesById(id);
+    public List<EmployeeResponse> getEmployeesByCompany(@PathVariable Integer id) {
+        return employeeMapper.toResponses(companyService.findEmployeesById(id));
     }
 
     @GetMapping(params = {"page", "pageSize"})
