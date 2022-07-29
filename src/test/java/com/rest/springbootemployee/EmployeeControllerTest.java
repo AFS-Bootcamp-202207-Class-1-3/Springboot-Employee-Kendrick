@@ -142,12 +142,9 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_employee_not_found_exception_when_put_not_found_id_employee() throws Exception {
-        Employee employeeReturn = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", COMPANY_ID, 20000));
+//        Employee employeeReturn = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", COMPANY_ID, 20000));
 
-
-//        Integer id=employeeRequest.get
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", employeeReturn.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundOneException))
                 .andExpect(result -> assertEquals("com.rest.springbootemployee.entity.Employee not found", result.getResolvedException().getMessage()));
