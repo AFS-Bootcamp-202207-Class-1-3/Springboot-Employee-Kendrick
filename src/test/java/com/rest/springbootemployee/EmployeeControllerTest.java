@@ -1,7 +1,9 @@
 package com.rest.springbootemployee;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.entity.EmployeeRequest;
 import com.rest.springbootemployee.exception.NotFoundOneException;
 import com.rest.springbootemployee.repository.EmployeeRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
@@ -38,7 +40,7 @@ public class EmployeeControllerTest {
     @Autowired
     private JpaCompanyRepository jpaCompanyRepository;
 
-    //  Éú³ÉÒ»¸ö¿Õ¿Ç¹«Ë¾·ÀÖ¹Íâ¼ü³ö´í
+    //  ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Õ¿Ç¹ï¿½Ë¾ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Company prepareCompany;
 
     private Integer COMPANY_ID;
@@ -61,32 +63,28 @@ public class EmployeeControllerTest {
         Employee employee = jpaEmployeeRepository.save(new Employee(1, "Kendrick", 22, "male", COMPANY_ID, 20000));
 //        employeeRepository.addAEmployee(new Employee(1, "Kendrick", 22, "male", 20000));
 
+
         mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()));
     }
 
     @Test
     public void should_create_new_employee_when_perform_post_given_new_employee() throws Exception {
-        String newEmployee = "{\n" +
-                "                \"id\": 2,\n" +
-                "                \"name\": \"Kendraxxxxick\",\n" +
-                "                \"age\": 12,\n" +
-                "                \"gender\": \"male\",\n" +
-                "                \"salary\": 30000\n" +
-                "            }";
+        EmployeeRequest employeeRequest = new EmployeeRequest("Kendraxxxxick",12,"male",200,1);
+        ObjectMapper objectMapper=new ObjectMapper();
+        String employee = objectMapper.writeValueAsString(employeeRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/employees")
-                .contentType(MediaType.APPLICATION_JSON).content(newEmployee))
+                .contentType(MediaType.APPLICATION_JSON).content(employee))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Kendraxxxxick"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("male"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(12))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(30000));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(12));
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(30000));;
     }
 
     @Test

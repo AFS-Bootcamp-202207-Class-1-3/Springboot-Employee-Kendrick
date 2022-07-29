@@ -71,6 +71,7 @@ public class CompanyControllerTest {
 
     @Test
     public void should_create_new_company_when_perform_post_given_new_conpany() throws Exception {
+
         jpaCompanyRepository.save(new Company(null, Collections.emptyList(), "oocl"));
         String newCompany = "{\n" +
                 "    \"id\": 67,\n" +
@@ -130,7 +131,7 @@ public class CompanyControllerTest {
                 "            \"age\": 22,\n" +
                 "            \"gender\": \"male\",\n" +
                 "            \"companyId\": " + company.getId() + ",\n" +
-                "            \"salary\": 200\n" +
+                "            \"salary\": 100\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\": 100,\n" +
@@ -153,7 +154,7 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employee.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(100));
 
     }
 

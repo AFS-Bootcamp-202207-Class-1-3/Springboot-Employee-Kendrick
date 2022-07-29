@@ -3,6 +3,9 @@ package com.rest.springbootemployee.controller;
 
 
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.entity.EmployeeRequest;
+import com.rest.springbootemployee.entity.EmployeeResponse;
+import com.rest.springbootemployee.mapper.EmployeeMapper;
 import com.rest.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +20,12 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
     @GetMapping
-    public List<Employee> getEmployees() {
-        return employeeService.getAllEmployee();
+    public List<EmployeeResponse> getEmployees() {
+        return employeeMapper.toResponses(employeeService.getAllEmployee());
     }
 
     @GetMapping("/{id}")
@@ -34,8 +40,12 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee addAEmployee(@RequestBody Employee employee) {
-        return employeeService.addAEmployee(employee);
+    public EmployeeResponse addAEmployee(@RequestBody EmployeeRequest employeeRequest) {
+
+        Employee employee = employeeMapper.toEntity(employeeRequest);
+        employeeService.addAEmployee(employee);
+        return employeeMapper.toResponse(employee);
+
     }
 
     @GetMapping(params = {"page", "pageSize"})
